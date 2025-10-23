@@ -106,7 +106,7 @@ const Classes = () => {
                         className="p-0 h-auto" 
                         asChild
                     >
-                        <Link href={`/classes/${cls.id}/students`}>
+                        <Link href={`/teacher/classes/${cls.id}/students`}>
                             Manage Students <ArrowRight className="h-4 w-4 ml-1" />
                         </Link>
                     </Button>

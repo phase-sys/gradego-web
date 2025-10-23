@@ -49,7 +49,7 @@ const StudentProfile = () => {
       <MobileLayout>
         <div className="p-4">
           <p className="text-destructive">Student not found.</p>
-          <Link href="/classes/1/students" className="text-primary hover:underline mt-4 flex items-center">
+          <Link href="/teacher/classes/1/students" className="text-primary hover:underline mt-4 flex items-center">
             <ArrowLeft className="h-4 w-4 mr-1" /> Back to Student List
           </Link>
         </div>
@@ -67,7 +67,7 @@ const StudentProfile = () => {
   return (
     <MobileLayout>
       <div className="p-4 space-y-6">
-        <Link href="/classes/1/students" className="flex items-center text-sm text-primary hover:underline mb-4">
+        <Link href="/teacher/classes/1/students" className="flex items-center text-sm text-primary hover:underline mb-4">
             <ArrowLeft className="h-4 w-4 mr-1" /> Back to Student List
         </Link>
         

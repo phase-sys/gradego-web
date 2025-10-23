@@ -59,7 +59,7 @@ const StudentManagement = () => {
       <MobileLayout>
         <div className="p-4">
           <p className="text-destructive">Class not found.</p>
-          <Link href="/classes" className="text-primary hover:underline mt-4 flex items-center">
+          <Link href="/teacher/classes" className="text-primary hover:underline mt-4 flex items-center">
             <ArrowLeft className="h-4 w-4 mr-1" /> Back to Classes
           </Link>
         </div>
@@ -86,7 +86,7 @@ const StudentManagement = () => {
   return (
     <MobileLayout>
       <div className="p-4 space-y-6">
-        <Link href="/classes" className="flex items-center text-sm text-primary hover:underline mb-4">
+        <Link href="/teacher/classes" className="flex items-center text-sm text-primary hover:underline mb-4">
             <ArrowLeft className="h-4 w-4 mr-1" /> Back to Classes
         </Link>
         <h1 className="text-3xl font-bold">Students in {currentClass.name}</h1>
@@ -146,7 +146,7 @@ const StudentManagement = () => {
                                 <span className="font-medium">{student.name} {student.isArchived && <span className="text-xs text-muted-foreground">(Archived)</span>}</span>
                             </div>
                             <Button variant="link" size="sm" asChild>
-                                <Link href={`/students/${student.id}/profile`}>
+                                <Link href={`/teacher/students/${student.id}/profile`}>
                                     View Profile <ArrowRight className="h-4 w-4 ml-1" />
                                 </Link>
                             </Button>
