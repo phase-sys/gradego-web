@@ -1,14 +1,21 @@
-"use client";
+'use client'
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'
+import { useCallback } from 'react'
 
-// This hook provides a navigate function compatible with the signature used in authStore.ts (e.g., logout(navigate))
-export const useNextRouterNavigate = () => {
-  const router = useRouter();
-  
-  const navigate = (path: string) => {
-    router.push(path);
-  };
-  
-  return navigate;
-};
+/**
+ * A typed wrapper around Next.js router.push() for simple, declarative navigation.
+ * Example: const navigate = useNextRouterNavigate(); navigate('/dashboard')
+ */
+export function useNextRouterNavigate() {
+  const router = useRouter()
+
+  const navigate = useCallback(
+    (path: string) => {
+      router.push(path)
+    },
+    [router]
+  )
+
+  return navigate
+}
