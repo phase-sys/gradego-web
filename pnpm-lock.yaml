@@ -23,6 +23,9 @@ importers:
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
+      bcrypt-ts:
+        specifier: ^7.1.0
+        version: 7.1.0
       bcryptjs:
         specifier: ^3.0.2
         version: 3.0.2
@@ -1065,6 +1068,10 @@ packages:
   baseline-browser-mapping@2.8.20:
     resolution: {integrity: sha512-JMWsdF+O8Orq3EMukbUN1QfbLK9mX2CkUmQBcW2T0s8OmdAUL5LLM/6wFwSrqXzlXB13yhyK9gTKS1rIizOduQ==}
     hasBin: true
+
+  bcrypt-ts@7.1.0:
+    resolution: {integrity: sha512-t/Dqr9YzYmn/+oPQBgotBPUuezpZD5CPBwapM5Ep1p3zsLmEycMdXOfZpWbztSBWJ41DlB7EluJBUDsAGSiUeQ==}
+    engines: {node: '>=20'}
 
   bcrypt@6.0.0:
     resolution: {integrity: sha512-cU8v/EGSrnH+HnxV2z0J7/blxH8gq7Xh2JFT6Aroax7UohdmiJJlxApMxtKfuI7z68NvvVcmR78k2LbT6efhRg==}
@@ -3300,6 +3307,8 @@ snapshots:
   balanced-match@1.0.2: {}
 
   baseline-browser-mapping@2.8.20: {}
+
+  bcrypt-ts@7.1.0: {}
 
   bcrypt@6.0.0:
     dependencies:

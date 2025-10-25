@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { Frown } from 'lucide-react';
+import Link from 'next/link'
+import { Frown } from 'lucide-react'
 
 export default function NotFound() {
   return (
@@ -9,9 +9,9 @@ export default function NotFound() {
       <p className="text-xl text-muted-foreground mb-6">
         We couldn't find the page you were looking for.
       </p>
-      <Link href="/" className="text-primary hover:underline">
+      <Link href="/login" className="text-primary hover:underline">
         Go back to Dashboard
       </Link>
     </div>
-  );
+  )
 }
