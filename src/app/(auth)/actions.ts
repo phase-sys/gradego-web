@@ -1,9 +1,12 @@
-import { getSession, signIn } from 'next-auth/react'
+'use server'
+
 import z from 'zod'
-import { UserType } from './auth'
-import { step1Schema } from '@/sections/auth/enroll/Step1StudentInfo'
-import { step2Schema } from '@/sections/auth/enroll/Step2GuardianInfo'
-import { step3Schema } from '@/sections/auth/enroll/Step3AccountSetup'
+import { enrollActionSchema } from '@/sections/auth/enroll/step-schemas'
+import { teachers, users } from '@/lib/db/schema'
+import { db } from '@/lib/db/queries'
+import { generateHashedPassword } from '@/lib/db/utils'
+import { signIn } from '@/app/(auth)/auth'
+import { NeonDbError } from '@neondatabase/serverless'
 
 // Login Action
 const authFormSchema = z.object({
@@ -59,7 +62,6 @@ export const login = async (
 export interface RegisterActionState {
   status: 'idle' | 'success' | 'failed' | 'invalid_data'
   message: string | 'Currently Idle'
-  type: UserType
 }
 
 const teacherRegisterSchema = z.object({
@@ -82,10 +84,29 @@ export const registerTeacher = async (
     const data = Object.fromEntries(formData.entries())
     const validated = teacherRegisterSchema.parse(data)
 
-    // Example DB save
-    // await db.teacher.create({ data: { ...validated } })
+    // 1️⃣ Hash password
+    const hashedPassword = generateHashedPassword(validated.password)
 
-    // Auto sign-in after registration
+    // 2️⃣ Insert into users table
+    const [user] = await db
+      .insert(users)
+      .values({
+        email: validated.email,
+        password: hashedPassword,
+        role: 'teacher',
+      })
+      .returning({ id: users.id })
+
+    // 3️⃣ Insert into teachers table
+    await db.insert(teachers).values({
+      userId: user.id,
+      firstName: validated.firstName,
+      middleName: validated.middleName,
+      lastName: validated.lastName,
+      extension: validated.extension,
+    })
+
+    // 4️⃣ Auto sign-in after registration
     const result = await signIn('credentials', {
       email: validated.email,
       password: validated.password,
@@ -96,31 +117,39 @@ export const registerTeacher = async (
       return {
         status: 'failed',
         message: 'Account created but failed to sign in automatically.',
-        type: 'teacher',
       }
     }
-
-    const session = await getSession()
-    const userType = session?.user?.type ?? 'teacher'
 
     return {
       status: 'success',
       message: 'Teacher account created successfully!',
-      type: userType as UserType,
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
         status: 'invalid_data',
         message: error.message ?? 'Invalid form data.',
-        type: 'teacher',
+      }
+    }
+
+    if (
+      error instanceof Error &&
+      'cause' in error &&
+      error.cause instanceof NeonDbError
+    ) {
+      console.error('Database Error Code:', error.cause.code)
+
+      if (error.cause.code === '23505') {
+        return {
+          status: 'failed',
+          message: 'Email already exists. Please use a different one.',
+        }
       }
     }
 
     return {
       status: 'failed',
       message: 'Registration failed. Please try again later.',
-      type: 'teacher',
     }
   }
 }
@@ -130,12 +159,6 @@ export interface EnrollActionState {
   status: 'idle' | 'success' | 'failed' | 'invalid_data'
   message: string | 'Currently Idle'
 }
-
-export const enrollActionSchema = z.object({
-  ...step1Schema.shape,
-  ...step2Schema.shape,
-  ...step3Schema.shape,
-})
 
 export async function enrollStudent(
   _: EnrollActionState,

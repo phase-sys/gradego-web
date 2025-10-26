@@ -7,20 +7,16 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import AuthWrapper from '@/components/scaffolding/AuthWrapper'
 import { useActionState } from 'react'
+import { enrollStudent, EnrollActionState } from '../actions'
 import {
-  enrollStudent,
-  EnrollActionState,
-  enrollActionSchema,
-} from '../actions'
-import Step1StudentInfo, {
   step1Schema,
-} from '@/sections/auth/enroll/Step1StudentInfo'
-import Step2GuardianInfo, {
   step2Schema,
-} from '@/sections/auth/enroll/Step2GuardianInfo'
-import Step3AccountSetup, {
   step3Schema,
-} from '@/sections/auth/enroll/Step3AccountSetup'
+  enrollActionSchema,
+} from '@/sections/auth/enroll/step-schemas'
+import Step1StudentInfo from '@/sections/auth/enroll/Step1StudentInfo'
+import Step2GuardianInfo from '@/sections/auth/enroll/Step2GuardianInfo'
+import Step3AccountSetup from '@/sections/auth/enroll/Step3AccountSetup'
 import Step4Confirmation from '@/sections/auth/enroll/Step4Confirmation'
 import Link from 'next/link'
 import { z, ZodObject, ZodRawShape } from 'zod'

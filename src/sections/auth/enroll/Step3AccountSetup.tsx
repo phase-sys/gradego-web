@@ -1,18 +1,9 @@
 'use client'
 
-import { z } from 'zod'
-import Link from 'next/link'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import EnrollmentStep from '@/components/EnrollmentStep'
 import { EnrollFormValues } from '@/app/(auth)/enroll/page'
-
-export const step3Schema = z.object({
-  email: z.email('Invalid email'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
-})
-
-export type Step3FormValues = z.infer<typeof step3Schema>
 
 export default function Step3AccountSetup({
   formValues,

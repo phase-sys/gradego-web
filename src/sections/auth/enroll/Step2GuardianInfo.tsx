@@ -3,25 +3,6 @@
 import EnrollmentStep from '@/components/EnrollmentStep'
 import Field from '@/components/Field'
 import { EnrollFormValues } from '@/app/(auth)/enroll/page'
-import z from 'zod'
-
-// Step 2 schema
-export const step2Schema = z.object({
-  guardianFirstName: z.string().min(1, 'First name is required'),
-  guardianMiddleName: z.string().optional(),
-  guardianLastName: z.string().min(1, 'Last name is required'),
-  guardianExtension: z.string().optional(),
-  guardianRelationship: z.string().min(1, 'Relationship is required'),
-  guardianNumber: z
-    .string()
-    .regex(
-      /^09\d{9}$/,
-      'Invalid number. Must start with 09 and have 11 digits'
-    ),
-})
-
-// Type derived from schema
-export type Step2FormValues = z.infer<typeof step2Schema>
 
 const fields = [
   {

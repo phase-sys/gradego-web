@@ -1,68 +1,10 @@
 'use client'
 
-import { z } from 'zod'
 import Field from '@/components/Field'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { EnrollFormValues } from '@/app/(auth)/enroll/page'
 import EnrollmentStep from '@/components/EnrollmentStep'
-
-export const step1Schema = z.object({
-  firstName: z.string().min(1, 'First name is required'),
-  middleName: z.string().optional(),
-  lastName: z.string().min(1, 'Last name is required'),
-  extension: z.string().optional(),
-  sex: z.string().min(1, 'Please select from the choices'),
-  gender: z.string().optional(),
-  birthday: z.string().min(1, 'Birthday is required'),
-  lrn: z.string().superRefine((val, ctx) => {
-    if (!val || val.trim() === '') {
-      ctx.addIssue({ code: 'custom', message: 'LRN is required' })
-      return
-    }
-    if (!/^\d+$/.test(val)) {
-      ctx.addIssue({ code: 'custom', message: 'LRN must contain only numbers' })
-    }
-  }),
-  interestingFact: z.string().optional(),
-})
-
-export type Step1FormValues = z.infer<typeof step1Schema>
-
-const fields = [
-  {
-    label: 'First Name',
-    name: 'firstName',
-    placeholder: 'Juan',
-    required: true,
-  },
-  {
-    label: 'Middle Name',
-    name: 'middleName',
-    placeholder: 'Dela',
-    required: false,
-  },
-  { label: 'Last Name', name: 'lastName', placeholder: 'Cruz', required: true },
-  {
-    label: 'Extension',
-    name: 'extension',
-    placeholder: 'Jr., Sr., III',
-    required: false,
-  },
-  { label: 'Birthday', name: 'birthday', type: 'date', required: true },
-  {
-    label: 'LRN',
-    name: 'lrn',
-    placeholder: 'e.g. 123456789012',
-    required: true,
-  },
-  {
-    label: 'Interesting Fact',
-    name: 'interestingFact',
-    placeholder: 'e.g. I love robotics',
-    required: false,
-  },
-]
 
 export default function Step1StudentInfo({
   formValues,
