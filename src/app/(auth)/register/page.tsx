@@ -1,27 +1,23 @@
 'use client'
 
 import { useActionState, useEffect, useState } from 'react'
-import Link from 'next/link'
 import Form from 'next/form'
-
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Eye, EyeOff, GraduationCap, UserPlus, Home } from 'lucide-react'
-import { login, LoginActionState } from '../actions'
+import { Eye, EyeOff, Home } from 'lucide-react'
+import { registerTeacher, RegisterActionState } from '@/app/(auth)/actions'
 import { showError, showSuccess } from '@/lib/toast'
 import { useNextRouterNavigate } from '@/lib/navigation'
 import AuthWrapper from '@/components/scaffolding/AuthWrapper'
 
-export default function SignInPage() {
+export default function RegisterTeacherPage() {
   const { refresh } = useNextRouterNavigate()
-  const [state, formAction] = useActionState<LoginActionState, FormData>(
-    login,
-    {
-      status: 'idle',
-      message: 'Currently Idle',
-    }
+  const [state, formAction] = useActionState<RegisterActionState, FormData>(
+    registerTeacher,
+    { status: 'idle', message: 'Currently Idle', type: 'teacher' }
   )
   const [showPassword, setShowPassword] = useState(false)
 
@@ -34,38 +30,48 @@ export default function SignInPage() {
     }
   }, [state, refresh])
 
-  const handleSubmit = (formData: FormData) => {
-    formAction(formData)
-  }
-
   return (
     <AuthWrapper>
       <Card className="w-full max-w-md shadow-xl border border-blue-100">
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-3xl font-bold text-blue-700">
-            Welcome Back 👋
+            Teacher Registration
           </CardTitle>
           <p className="text-sm text-gray-500">
-            Sign in to continue to GradeGo
+            Create your teacher account to manage classes
           </p>
         </CardHeader>
 
         <CardContent>
-          <Form action={handleSubmit} className="space-y-6">
+          <Form action={formAction} className="space-y-6">
+            {/* Name Fields */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1">
+                <Label htmlFor="firstName">First Name</Label>
+                <Input id="firstName" name="firstName" required />
+              </div>
+              <div className="flex flex-col gap-1">
+                <Label htmlFor="middleName">Middle Name</Label>
+                <Input id="middleName" name="middleName" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input id="lastName" name="lastName" required />
+              </div>
+              <div className="flex flex-col gap-1">
+                <Label htmlFor="extension">Extension (optional)</Label>
+                <Input id="extension" name="extension" placeholder="Jr., III" />
+              </div>
+            </div>
+
             {/* Email */}
-            <div className="flex flex-col space-y-1">
+            <div className="flex flex-col gap-1">
               <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="you@example.com"
-                required
-              />
+              <Input id="email" name="email" type="email" required />
             </div>
 
             {/* Password */}
-            <div className="flex flex-col space-y-1">
+            <div className="flex flex-col gap-1">
               <Label htmlFor="password">Password</Label>
               <div className="relative w-full">
                 <Input
@@ -87,51 +93,23 @@ export default function SignInPage() {
               </div>
             </div>
 
-            {/* Sign In Button */}
+            {/* Submit */}
             <Button
               type="submit"
               className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white transition-colors"
             >
-              Sign In
+              Create Teacher Account
             </Button>
           </Form>
 
-          {/* Registration Options */}
-          <div className="mt-8">
-            <p className="text-center text-sm text-gray-600 mb-3">
-              Don’t have an account?
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <Link href="/register" className="w-full">
-                <Button
-                  variant="outline"
-                  className="w-full flex items-center justify-center gap-2 border-blue-200 hover:bg-blue-50 cursor-pointer transition-all"
-                >
-                  <UserPlus size={16} className="text-blue-600" />
-                  Teacher
-                </Button>
-              </Link>
-
-              <Link href="/enroll" className="w-full">
-                <Button
-                  variant="outline"
-                  className="w-full flex items-center justify-center gap-2 border-indigo-200 hover:bg-indigo-50 cursor-pointer transition-all"
-                >
-                  <GraduationCap size={16} className="text-indigo-600" />
-                  Student
-                </Button>
-              </Link>
-            </div>
-          </div>
-
-          {/* Back to Home */}
-          <div className="mt-6 text-center text-sm text-gray-600">
+          {/* Already have an account */}
+          <div className="mt-8 text-center text-sm text-gray-600">
+            Already have an account?{' '}
             <Link
-              href="/"
-              className="inline-flex items-center justify-center gap-1 text-blue-600 hover:text-blue-700 cursor-pointer transition-colors"
+              href="/login"
+              className="text-blue-600 hover:text-blue-700 font-medium cursor-pointer transition-colors"
             >
-              <Home size={16} />
-              Back to Home
+              Sign In
             </Link>
           </div>
         </CardContent>

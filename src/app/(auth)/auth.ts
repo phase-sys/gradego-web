@@ -57,10 +57,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         //   type: userType,
         // }
 
+        const emailStr = String(email) // or email as string
+        const type: UserType = emailStr.endsWith('@stud.com')
+          ? 'student'
+          : 'teacher'
+
         return {
           id: '123',
-          email: 'you@example.com',
-          type: 'teacher',
+          email: emailStr,
+          type,
         }
       },
     }),

@@ -6,11 +6,16 @@ const secret = process.env.NEXTAUTH_SECRET
 
 export async function proxy(req: NextRequest) {
   const token = await getToken({ req, secret })
-
   const { pathname } = req.nextUrl
 
   // Redirect logged-in users away from login page
   if (pathname === '/login' && token) {
+    return NextResponse.redirect(new URL(`/${token.type}`, req.url))
+  }
+  if (pathname === '/register' && token) {
+    return NextResponse.redirect(new URL(`/${token.type}`, req.url))
+  }
+  if (pathname === '/enroll' && token) {
     return NextResponse.redirect(new URL(`/${token.type}`, req.url))
   }
 
@@ -37,5 +42,12 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/login', '/student/:path*', '/teacher/:path*', '/admin/:path*'],
+  matcher: [
+    '/login',
+    '/enroll',
+    '/register',
+    '/student/:path*',
+    '/teacher/:path*',
+    '/admin/:path*',
+  ],
 }
